@@ -6,23 +6,29 @@ export class BookRentalStore {
     let totalCharges = 0;
 
     for (const book of customer.rentedBooks) {
-      let chargePerDay: number;
+      let firstTwoDayChargeForRegular: number = 1;
+      let chargeAfterTwoDaysRegular: number = 1.5; 
 
-      switch (book.type) {
-        case BookType.Regular:
-          chargePerDay = 1.5;
-          break;
-        case BookType.Fiction:
-          chargePerDay = 3;
-          break;
-        case BookType.Novel:
-          chargePerDay = 1.5;
-          break;
-        default:
-          throw new Error(`Invalid book type: ${book.type}`);
+      let chargePerDayFiction: number = 3;
+      let chargePerDayNovel: number = 1.5;
+
+      let bookCharges: number = 0;
+      if(book.type === BookType.Regular) {
+        if(book.rentedDays < 2) {
+          bookCharges = 2;
+        } else {
+          bookCharges = (firstTwoDayChargeForRegular * 2) + (chargeAfterTwoDaysRegular * (book.rentedDays - 2));
+        }
+      } else if (book.type === BookType.Novel) {
+         if(book.rentedDays < 3) {
+            bookCharges = 4.5;
+         } else {
+            bookCharges = chargePerDayNovel * book.rentedDays;
+         }
+      } else {
+        bookCharges = book.rentedDays * chargePerDayFiction;
       }
 
-      const bookCharges = book.rentedDays * chargePerDay;
       totalCharges += bookCharges;
     }
 
