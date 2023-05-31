@@ -25,6 +25,6 @@ Book-Rental-System Design.
 2. Committed each story solution after it is completed. It can be viewed in the commit history. 
 3. Logical functionality and models are implemented following object oriented design principle.
 
-## What is not done 
+#### What is not done 
 
 1. Database Connection. 
