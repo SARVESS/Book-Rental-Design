@@ -1,10 +1,31 @@
 import { Customer } from "../model/customer";
+import { BookType } from "../model/book";
 
 export class BookRentalStore {
-    static calculateCharges(customer: Customer): number {
-      const numberOfBooks = customer.rentedBooks.length;
-      const totalDaysRented = customer.rentedBooks.reduce((total, book) => total + book.rentedDays, 0);
-      const totalCharges = totalDaysRented * 1; // Assuming the per day charge is Rs 1
-      return totalCharges;
+  static calculateCharges(customer: Customer): number {
+    let totalCharges = 0;
+
+    for (const book of customer.rentedBooks) {
+      let chargePerDay: number;
+
+      switch (book.type) {
+        case BookType.Regular:
+          chargePerDay = 1.5;
+          break;
+        case BookType.Fiction:
+          chargePerDay = 3;
+          break;
+        case BookType.Novel:
+          chargePerDay = 1.5;
+          break;
+        default:
+          throw new Error(`Invalid book type: ${book.type}`);
+      }
+
+      const bookCharges = book.rentedDays * chargePerDay;
+      totalCharges += bookCharges;
     }
+
+    return totalCharges;
+  }
 }
